@@ -1,5 +1,4 @@
-import Joi from "joi"
-
+import Joi from "joi";
 
 const contactsAddSchema = Joi.object({
   name: Joi.string().required(),
@@ -10,7 +9,10 @@ const contactsAddSchema = Joi.object({
   phone: Joi.string()
     .pattern(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/)
     .required(),
-    favorite: Joi.boolean(),
 });
 
-export default contactsAddSchema;
+const contactUpdateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
+export default { contactsAddSchema, contactUpdateFavoriteSchema };
