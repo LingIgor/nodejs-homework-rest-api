@@ -1,19 +1,15 @@
 import mongoose from "mongoose";
 import app from "./app.js";
-import dotenv from "dotenv"
+import "dotenv/config";
 
-dotenv.config();
-
-const{ DB_HOST, PORT} = process.env
- 
+const { DB_HOST, PORT } = process.env;
 
 mongoose
   .connect(DB_HOST)
-  .then(()=> {
+  .then(() => {
     app.listen(PORT, () => {
       console.log("Database connection successful");
     });
-
   })
   .catch((error) => {
     console.log(error.message);
@@ -21,5 +17,3 @@ mongoose
   });
 
 // ADMIN_PASSWORD = GbnLhFjCvnpn2tBb
-
-
