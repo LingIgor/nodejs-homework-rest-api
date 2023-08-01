@@ -6,14 +6,14 @@ const getAll = async (req, res) => {
   const { _id: owner } = req.user;
   const result = await Contact.find({ owner }, "-cratedAt -updatedAt").populate(
     "owner",
-    "email subscription"
+    "email"
   );
   res.json(result);
 };
 
 const getById = async (req, res) => {
-  const { id } = req.params;
-  const result = await Contact.findById(id);
+  const { contactId } = req.params;
+  const result = await Contact.findById(contactId);
   if (!result) {
     throw HttpError(404, "Not found");
   }
