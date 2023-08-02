@@ -12,9 +12,8 @@ const signup = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
-    throw HttpError(409, "Email or password invalid");
+    throw HttpError(409, "Email in use");
   }
-
   const hashPassword = await bcrypt.hash(password, 10);
 
   const newUser = await User.create({ ...req.body, password: hashPassword });
@@ -59,14 +58,10 @@ const getCurrent = (req, res) => {
 
 const signout = async (req, res) => {
   const { _id } = req.user;
-  const result = await User.findByIdAndUpdate(_id, { token: "" });
+  await User.findByIdAndUpdate(_id, { token: "" });
 
-  if (!result) {
-    throw HttpError(401, "Not authorized");
-  }
-
-  res.status(204).json({
-    message: "Signout success",
+  res.json({
+    message: "Signout ssucess",
   });
 };
 
