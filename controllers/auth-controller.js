@@ -6,6 +6,7 @@ import { HttpError } from "../helpers/index.js";
 import path from "path";
 import fs from "fs/promises";
 import gravatar from "gravatar";
+import Jimp from "jimp";
 import "dotenv/config";
 
 const { JWT_SECRET } = process.env;
@@ -77,12 +78,16 @@ const signout = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
-
   const { path: oldPath, filename } = req.file;
-  console.log(req.file);
   const newPath = path.join(avatarsPath, filename);
+  const img = await Jimp.read(oldPath);
+  await img
+    .autocrop()
+    .cover(250, 250, Jimp.HORIZONTAL_ALIGN_CENTER)
+    .writeAsync(oldPath);
   await fs.rename(oldPath, newPath);
   const avatarURL = path.join("avatars", filename);
+
   await User.findByIdAndUpdate(_id, { avatarURL });
 
   res.json({

@@ -2,7 +2,7 @@ import express from "express";
 import { validateBody } from "../../decorators/index.js";
 import usersSchema from "../../schemas/users-schema.js";
 import authController from "../../controllers/auth-controller.js";
-import { authenticate, upload, resizeAvatar } from "../../midlewars/index.js";
+import { authenticate, upload } from "../../midlewars/index.js";
 
 const authRouter = express.Router();
 
@@ -25,7 +25,6 @@ authRouter.post("/logout", authenticate, authController.signout);
 authRouter.patch(
   "/avatars",
   authenticate,
-  resizeAvatar,
   upload.single("avatar"),
   authController.updateAvatar
 );
